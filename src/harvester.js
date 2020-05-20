@@ -10,11 +10,9 @@ module.exports.job = (creep) => {
 	    creep.moveTo(source);
 	}
 	else if (creep.store[RESOURCE_ENERGY] === creep.store.getCapacity() && creep.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-	    console.log("YES");
 	    creep.moveTo(spawn);
 	}
 	else {
-	    console.log(creep.transfer(spawn, RESOURCE_ENERGY));
 	    creep.harvest(source) || creep.transfer(spawn);
 	}
 };
