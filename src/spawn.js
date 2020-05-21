@@ -3,7 +3,7 @@ const upgraderNB = 2;
 const builderNB = 3;
 const maintainerNB = 3;
 let worker = (spawn) => {
-    if (spawn.store.getCapacity() >= 300) {
+    if (spawn.store.getCapacity(RESOURCE_ENERGY) >= 300) {
         return [WORK, WORK, CARRY, MOVE];
     }
     return [WORK, CARRY, MOVE];
