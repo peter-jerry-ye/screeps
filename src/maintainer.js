@@ -2,7 +2,7 @@ module.exports.job = (creep) => {
 	if (creep.memory.target == null 
 	        || Game.getObjectById(creep.memory.target) == null
 	        || (Game.getObjectById(creep.memory.target).structureType == STRUCTURE_WALL
-	                && Game.getObjectById(creep.memory.target).hits > creep.memory.previousHits + 1000)
+	                && Game.getObjectById(creep.memory.target).hits >= creep.memory.previousHits + 5000)
 	        || Game.getObjectById(creep.memory.target).hits == Game.getObjectById(creep.memory.target).hitsMax) {
 		let structures = creep.room.find(FIND_STRUCTURES, {filter: object => object.structureType != STRUCTURE_WALL && object.hits < object.hitsMax}).sort((a, b) => a.hits - b.hits);
 		if (structures.length === 0)
