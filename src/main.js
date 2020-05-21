@@ -2,6 +2,7 @@ let spawn = require("spawn");
 let harvester = require("harvester");
 let upgrader = require("upgrader");
 let builder = require("builder");
+let maintainer = require("maintainer");
 module.exports.loop = function () {
 	// Your code goes here
 	Object.entries(Game.spawns).forEach(
@@ -17,7 +18,22 @@ module.exports.loop = function () {
 	                upgrader.job(creepObject);
 	                break;
 	            case "builder":
-	                builder.job(creepObject);
+	                let buildList = creepObject.room.find(FIND_CONSTRUCTION_SITES);
+	                if (buildList.length == 0) {
+	                    maintainer.job(creepObject);
+	                }
+	                else {
+	                    builder.job(creepObject);
+	                }
+	                break;
+	            case "maintainer":
+	                let maintainList = creepObject.room.find(FIND_STRUCTURES, {filter: object => object.hits < object.hitsMax});
+	                if (maintainList.length == 0) {
+	                    builder.job(creepObject);
+	                }
+	                else {
+	                    maintainer.job(creepObject);
+	                }
 	                break;
 	        }
 	    }

@@ -1,5 +1,7 @@
 module.exports.job = (creep) => {
-	if (creep.memory.target == null || Game.getObjectById(creep.memory.target) == null) {
+	if (creep.memory.target == null 
+	        || Game.getObjectById(creep.memory.target) == null 
+	        || Game.getObjectById(creep.memory.target).progress == null) { // if it's not a construction site
 		let constructionSites = creep.room.find(FIND_CONSTRUCTION_SITES);
 		if (constructionSites.length === 0)
 		    return;
@@ -20,6 +22,6 @@ module.exports.job = (creep) => {
 	    creep.moveTo(target);
 	}
 	else {
-	    creep.harvest(source) === 0 || creep.build(target);
+	    creep.harvest(source) === 0 || creep.build(target) === 0 || creep.moveTo(target);
 	}
 };

@@ -13,6 +13,6 @@ module.exports.job = (creep) => {
 	    creep.moveTo(spawn);
 	}
 	else {
-	    creep.harvest(source) === 0 || creep.transfer(spawn);
+	    creep.harvest(source) === 0 || creep.transfer(spawn) === 0 || creep.moveTo(spawn);
 	}
 };

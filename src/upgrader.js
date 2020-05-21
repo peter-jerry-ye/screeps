@@ -16,6 +16,6 @@ module.exports.job = (creep) => {
 	    creep.moveTo(controller);
 	}
 	else {
-	    creep.harvest(source) === 0 || creep.upgradeController(controller);
+	    creep.harvest(source) === 0 || creep.upgradeController(controller) === 0 || creep.moveTo(controller);
 	}
 };
