@@ -3,7 +3,7 @@ module.exports.job = (creep) => {
         creep.memory.controller = creep.room.controller.id;
     }
 	if (creep.memory.source == null) {
-		creep.memory.source = Game.getObjectById(creep.memory.controller).memory.source;
+		creep.memory.source = Game.getObjectById(creep.memory.controller).pos.findClosestByRange(FIND_SOURCES).id;
 	}
 	let {controller, source} = creep.memory; // id
 	source = Game.getObjectById(source);
@@ -13,11 +13,9 @@ module.exports.job = (creep) => {
 	    creep.moveTo(source);
 	}
 	else if (creep.store[RESOURCE_ENERGY] === creep.store.getCapacity() && creep.transfer(controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-	    console.log("YES");
 	    creep.moveTo(controller);
 	}
 	else {
-	    console.log(creep.transfer(controller, RESOURCE_ENERGY));
 	    creep.harvest(source) || creep.transfer(controller);
 	}
 };
