@@ -12,10 +12,10 @@ module.exports.job = (creep) => {
 	if (creep.store[RESOURCE_ENERGY] == 0 && creep.harvest(source) == ERR_NOT_IN_RANGE) {
 	    creep.moveTo(source);
 	}
-	else if (creep.store[RESOURCE_ENERGY] === creep.store.getCapacity() && creep.transfer(controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+	else if (creep.store[RESOURCE_ENERGY] === creep.store.getCapacity() && creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
 	    creep.moveTo(controller);
 	}
 	else {
-	    creep.harvest(source) || creep.transfer(controller);
+	    creep.harvest(source) === 0 || creep.upgradeController(controller);
 	}
 };
