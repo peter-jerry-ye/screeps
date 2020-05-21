@@ -1,6 +1,7 @@
 let spawn = require("spawn");
 let harvester = require("harvester");
 let upgrader = require("upgrader");
+let builder = require("builder");
 module.exports.loop = function () {
 	// Your code goes here
 	Object.entries(Game.spawns).forEach(
@@ -14,6 +15,9 @@ module.exports.loop = function () {
 	                break;
 	            case "upgrader":
 	                upgrader.job(creepObject);
+	                break;
+	            case "builder":
+	                builder.job(creepObject);
 	                break;
 	        }
 	    }
