@@ -1,7 +1,13 @@
 const harvesterNB = 2;
 const upgraderNB = 2;
-const builderNB = 2;
+const builderNB = 3;
 const maintainerNB = 3;
+let worker = (spawn) => {
+    if (spawn.store.getCapacity() >= 300) {
+        return [WORK, WORK, CARRY, MOVE];
+    }
+    return [WORK, CARRY, MOVE];
+}
 module.exports.job = function(spawn) {
 	if (spawn.memory.source == null) {
 		spawn.memory.source = spawn.pos.findClosestByRange(FIND_SOURCES).id;
@@ -24,25 +30,25 @@ module.exports.job = function(spawn) {
 	    return creepObject.memory.role == 'maintainer';
 	});
 	if (harvesters.length < harvesterNB) {
-	    spawn.spawnCreep([WORK, CARRY, MOVE], 
+	    spawn.spawnCreep(worker(spawn), 
 	        Date.now().toString(),
 	        {memory: {spawn: spawn.id, role: "harvester"}}
 	    );
 	}
 	else if (upgraders.length < upgraderNB) {
-	    spawn.spawnCreep([WORK, CARRY, MOVE], 
+	    spawn.spawnCreep(worker(spawn), 
 	        Date.now().toString(),
 	        {memory: {spawn: spawn.id, role: "upgrader"}}
 	    );
 	}
 	else if (builders.length < builderNB) {
-	    spawn.spawnCreep([WORK, CARRY, MOVE],
+	    spawn.spawnCreep(worker(spawn),
 	        Date.now().toString(),
 	        {memory: {spawn: spawn.id, role: "builder"}}
 	    );
 	}
 	else if (maintainers.length < maintainerNB) {
-	    spawn.spawnCreep([WORK, CARRY, MOVE],
+	    spawn.spawnCreep(worker(spawn),
 	        Date.now().toString(),
 	        {memory: {spawn: spawn.id, role: "maintainer"}}
 	    );
