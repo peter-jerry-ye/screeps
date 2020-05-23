@@ -4,7 +4,10 @@ const builderNB = 3;
 const maintainerNB = 3;
 let worker = (spawn) => {
     let extensions = spawn.room.find(FIND_MY_STRUCTURES, {filter: {structureType: STRUCTURE_EXTENSION}});
-    if (extensions.length >= 5) {
+    let harvesters = Object.entries(Game.creeps).filter(([creepName, creepObject]) => {
+	    return creepObject.memory.role == 'harvester';
+	});
+    if (extensions.length >= 5 && harvesters.length > 0) {
         return [WORK, WORK, WORK, MOVE, MOVE, CARRY, CARRY];
     }
     else if (extensions.length >= 0) {

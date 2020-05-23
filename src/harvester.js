@@ -1,23 +1,36 @@
 module.exports.job = (creep) => {
 	// choose target
 	if (creep.memory.target != null && Game.getObjectById(creep.memory.target).store.getFreeCapacity(RESOURCE_ENERGY) === 0) { // change target
-	    Memory.targets["harvester"][creep.memory.target]--;
+	    Memory.targets["harvester"][creep.memory.target] = Memory.targets["harvester"][creep.memory.target] - 1;
 	    creep.memory.target = null;
 	}
 	if (creep.memory.target == null) {
-	    for (let id in Memory.targets["harvester"]) {
-	        let object = Game.getObjectById(id);
-	        if (object.store.getFreeCapacity(RESOURCE_ENERGY) != 0 && Memory.targets["harvester"][id] < 2) {
-	            Memory.targets["harvester"][id]++;
-	            creep.memory.target = id;
-	            break;
-	        }
-	    }
+	    let list = Object.entries(Memory.targets["harvester"])
+	            .filter(([id, count]) => Game.getObjectById(id).store.getFreeCapacity(RESOURCE_ENERGY) > 0)
+	            .sort(([id1, count1], [id2, count2]) => {
+	                if (Game.getObjectById(id1).structureType === STRUCTURE_SPAWN) {
+	                    return -1; // spawn first
+	                }
+	                else if (Game.getObjectById(id2).structureType === STRUCTURE_SPAWN) {
+	                    return 1; // spawn first
+	                }
+	                else {
+	                    return count1 - count2;
+	                }
+	            })
+	            .map(([id, count]) => id);
+	   if (list.length > 0) {
+	       creep.memory.target = list[0];
+	       Memory.targets["harvester"][creep.memory.target]++;
+	   }
 	}
 	
 	// choose source
 	let {target = null, source = null, spawn} = creep.memory; // id
 	if (target == null) return; // do nothing
+	
+	console.log(creep.id + " " + target);
+	
 	target = Game.getObjectById(target);
 	spawn = Game.getObjectById(spawn);
 	if (source == null) {
