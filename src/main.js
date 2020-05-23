@@ -3,8 +3,12 @@ let harvester = require("harvester");
 let upgrader = require("upgrader");
 let builder = require("builder");
 let maintainer = require("maintainer");
+
+let general = require("general");
+
+general.init(); // should be executed every 10 ticks
+
 module.exports.loop = function () {
-	// Your code goes here
 	Object.entries(Game.spawns).forEach(
 	    ([spawnName, spawnObject]) => spawn.job(spawnObject)
 	);
