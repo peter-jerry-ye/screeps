@@ -27,12 +27,14 @@ module.exports.job = (creep) => {
 	
 	// choose source
 	let {target = null, source = null, spawn} = creep.memory; // id
-	if (target == null) return; // do nothing
-	
-	console.log(creep.id + " " + target);
+	spawn = Game.getObjectById(spawn);
+	if (target == null) {
+	    // do nothing
+	    creep.moveTo(spawn);
+	    return;
+	}; 
 	
 	target = Game.getObjectById(target);
-	spawn = Game.getObjectById(spawn);
 	if (source == null) {
 	    creep.memory.source = spawn.memory.source[target.id];
 	    source = creep.memory.source;

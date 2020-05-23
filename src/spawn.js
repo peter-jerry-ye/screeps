@@ -30,25 +30,25 @@ module.exports.job = function(spawn) {
 	});
 	if (harvesters.length < harvesterNB) {
 	    spawn.spawnCreep(worker(spawn), 
-	        Date.now().toString(),
+	        "h" + Date.now().toString(),
 	        {memory: {spawn: spawn.id, role: "harvester"}}
 	    );
 	}
 	else if (upgraders.length < upgraderNB) {
 	    spawn.spawnCreep(worker(spawn), 
-	        Date.now().toString(),
+	        "u" + Date.now().toString(),
 	        {memory: {spawn: spawn.id, role: "upgrader"}}
 	    );
 	}
 	else if (builders.length < builderNB) {
 	    spawn.spawnCreep(worker(spawn),
-	        Date.now().toString(),
+	        "b" + Date.now().toString(),
 	        {memory: {spawn: spawn.id, role: "builder"}}
 	    );
 	}
 	else if (maintainers.length < maintainerNB) {
 	    spawn.spawnCreep(worker(spawn),
-	        Date.now().toString(),
+	        "m" + Date.now().toString(),
 	        {memory: {spawn: spawn.id, role: "maintainer"}}
 	    );
 	}

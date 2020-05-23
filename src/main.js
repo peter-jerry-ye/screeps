@@ -5,10 +5,17 @@ let builder = require("builder");
 let maintainer = require("maintainer");
 
 let general = require("general");
+let counter = 0;
 
 general.init(); // should be executed every 10 ticks
+console.log("init: " + counter);
 
 module.exports.loop = function () {
+    console.log(counter++);
+    if (counter % 10 == 0) {
+        general.init();
+        if (counter > 100) counter = 0;
+    }
 	Object.entries(Game.spawns).forEach(
 	    ([spawnName, spawnObject]) => spawn.job(spawnObject)
 	);
