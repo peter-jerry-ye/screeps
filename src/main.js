@@ -8,14 +8,17 @@ let tower = require("tower");
 let general = require("general");
 let counter = 0;
 
-general.init(); // should be executed every 10 ticks
+general.harvester(); // should be executed every 10 ticks
 
 module.exports.loop = function () {
     if (counter % 10 == 0) {
-        general.init();
-        if (counter > 100) counter = 0;
+        general.harvester();
+        general.maintainer();
     }
+    counter++;
+    if (counter > 100) counter = 0;
     harvester.init();
+    maintainer.init();
 	Object.entries(Game.spawns).forEach(
 	    ([spawnName, spawnObject]) => spawn.job(spawnObject)
 	);

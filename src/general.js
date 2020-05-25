@@ -1,4 +1,4 @@
-module.exports.init = () => {
+module.exports.harvester = () => {
     let harvesterTarget = new Set();
     Object.entries(Game.spawns).forEach(([spawnName, spawnObject]) => {
         harvesterTarget.add(spawnObject.id);
@@ -36,4 +36,37 @@ module.exports.init = () => {
     });
     
     Memory.targets["harvester"] = targets;
+};
+
+module.exports.maintainer = () => {
+    let maintainerTarget = new Set();
+    Object.entries(Game.spawns).forEach(([spawnName, spawnObject]) => {
+        spawnObject.room.find(FIND_MY_STRUCTURES)
+                .forEach((structureObject) => {
+            maintainerTarget.add(structureObject.id);
+        });
+        spawnObject.room.find(FIND_STRUCTURES, {filter: (wall) => {
+                if (wall.structureType != STRUCTURE_WALL && wall.structureType != STRUCTURE_ROAD)
+                    return false;
+                let path = spawnObject.pos.findPathTo(wall).reverse();
+                return path[0].x == wall.pos.x && path[0].y == wall.pos.y;
+            }}).forEach((wallObject) => {
+            maintainerTarget.add(wallObject.id);
+        });
+    });
+    
+    if (Memory.targets == null) 
+        Memory.targets = new Object();
+    let targets = new Object();
+    maintainerTarget.forEach(i => {
+        targets[i] = 0;
+    });
+    
+    Object.entries(Game.creeps).filter(([name, object]) => object.memory.role === "maintainer").map(([name, object]) => {
+        if (object.memory.target != null) {
+            targets[object.memory.target]++;
+        }
+    });
+    
+    Memory.targets["maintainer"] = targets;
 };
