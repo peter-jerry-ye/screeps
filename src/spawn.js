@@ -1,13 +1,16 @@
-const harvesterNB = 2;
+const harvesterNB = 3;
 const upgraderNB = 2;
-const builderNB = 3;
+const builderNB = 2;
 const maintainerNB = 3;
 let worker = (spawn) => {
     let extensions = spawn.room.find(FIND_MY_STRUCTURES, {filter: {structureType: STRUCTURE_EXTENSION}});
     let harvesters = Object.entries(Game.creeps).filter(([creepName, creepObject]) => {
 	    return creepObject.memory.role == 'harvester';
 	});
-    if (extensions.length >= 5 && harvesters.length > 0) {
+	if (extensions.length >= 10 && harvesters.length > 0) {
+	    return [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY]
+	}
+    else if (extensions.length >= 5 && harvesters.length > 0) {
         return [WORK, WORK, WORK, MOVE, MOVE, CARRY, CARRY];
     }
     else if (extensions.length >= 0) {

@@ -13,6 +13,13 @@ module.exports.init = () => {
             }
             harvesterTarget.add(extensionObject.id);
         });
+        spawnObject.room.find(FIND_MY_STRUCTURES, {filter: {structureType: STRUCTURE_TOWER}})
+                .forEach((towerObject) => {
+            if (!spawnObject.memory.source.hasOwnProperty(towerObject.id)) {
+                spawnObject.memory.source[towerObject.id] = towerObject.pos.findClosestByPath(FIND_SOURCES, {ignoreCreeps: true}).id;
+            }
+            harvesterTarget.add(towerObject.id);
+        });
     });
     
     if (Memory.targets == null) 

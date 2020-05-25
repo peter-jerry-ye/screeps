@@ -3,15 +3,14 @@ let harvester = require("harvester");
 let upgrader = require("upgrader");
 let builder = require("builder");
 let maintainer = require("maintainer");
+let tower = require("tower");
 
 let general = require("general");
 let counter = 0;
 
 general.init(); // should be executed every 10 ticks
-console.log("init: " + counter);
 
 module.exports.loop = function () {
-    console.log(counter++);
     if (counter % 10 == 0) {
         general.init();
         if (counter > 100) counter = 0;
@@ -49,4 +48,6 @@ module.exports.loop = function () {
 	        }
 	    }
 	);
+	Object.entries(Game.structures).filter(([structureName, structureObject]) => structureObject.structureType == STRUCTURE_TOWER)
+	        .forEach(([structureName, structureObject]) => tower.job(structureObject));
 }
