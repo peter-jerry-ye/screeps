@@ -27,8 +27,8 @@ let calculate = (creep) => {
 
 module.exports.job = (creep) => {
 	// choose target
-	if (creep.memory.target != null && Game.getObjectById(creep.memory.target).store.getFreeCapacity(RESOURCE_ENERGY) === 0
-	        || Game.getObjectById(creep.memory.spawn).store.getFreeCapacity(RESOURCE_ENERGY) != 0) { // change target
+	if (creep.memory.target != null && (Game.getObjectById(creep.memory.target).store.getFreeCapacity(RESOURCE_ENERGY) === 0
+	        || Game.getObjectById(creep.memory.spawn).store.getFreeCapacity(RESOURCE_ENERGY) != 0)) { // change target
 	    Memory.targets["harvester"][creep.memory.target] = Memory.targets["harvester"][creep.memory.target] - 1;
 	    creep.memory.target = null;
 	    creep.memory.source = null;

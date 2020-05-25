@@ -36,5 +36,4 @@ module.exports.init = () => {
     });
     
     Memory.targets["harvester"] = targets;
-
 };
