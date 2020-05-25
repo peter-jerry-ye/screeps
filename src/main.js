@@ -15,6 +15,7 @@ module.exports.loop = function () {
         general.init();
         if (counter > 100) counter = 0;
     }
+    harvester.init();
 	Object.entries(Game.spawns).forEach(
 	    ([spawnName, spawnObject]) => spawn.job(spawnObject)
 	);

@@ -1,3 +1,30 @@
+let calculated = false;
+let list = [];
+module.exports.init = () => {
+    calculated = false;
+    list = [];
+}
+
+let calculate = (creep) => {
+    list = Object.entries(Memory.targets["harvester"])
+	            .filter(([id, count]) => Game.getObjectById(id).store.getFreeCapacity(RESOURCE_ENERGY) > 0)
+	            .sort(([id1, count1], [id2, count2]) => {
+	                if ((Game.getObjectById(id1).structureType === STRUCTURE_SPAWN && Game.getObjectById(id2).structureType != STRUCTURE_SPAWN)
+	                        || (Game.getObjectById(id1).structureType != STRUCTURE_TOWER && Game.getObjectById(id2).structureType === STRUCTURE_TOWER)) {
+	                    return -1; // spawn first, tower second
+	                }
+	                else if ((Game.getObjectById(id1).structureType != STRUCTURE_SPAWN && Game.getObjectById(id2).structureType === STRUCTURE_SPAWN)
+	                        || (Game.getObjectById(id1).structureType === STRUCTURE_TOWER && Game.getObjectById(id2).structureType != STRUCTURE_TOWER)) {
+	                    return 1; // spawn first, tower second
+	                }
+	                else {
+	                    return count1 - count2;
+	                }
+	            })
+	            .map(([id, count]) => id);
+    calculated = true;
+}
+
 module.exports.job = (creep) => {
 	// choose target
 	if (creep.memory.target != null && Game.getObjectById(creep.memory.target).store.getFreeCapacity(RESOURCE_ENERGY) === 0
@@ -7,27 +34,14 @@ module.exports.job = (creep) => {
 	    creep.memory.source = null;
 	}
 	if (creep.memory.target == null || creep.memory.source == null) {
-	    let list = Object.entries(Memory.targets["harvester"])
-	            .filter(([id, count]) => Game.getObjectById(id).store.getFreeCapacity(RESOURCE_ENERGY) > 0)
-	            .sort(([id1, count1], [id2, count2]) => {
-	                if ((Game.getObjectById(id1).structureType === STRUCTURE_SPAWN && Game.getObjectById(id2).structureType != STRUCTURE_SPAWN)
-	                        || (Game.getObjectById(id1).structureType != STRUCTURE_TOWER && Game.getObjectById(id2).structureType === STRUCTURE_TOWER)) {
-	                    return -1; // spawn first, tower second
-	                }
-	                else if ((Game.getObjectById(id1).structureType != STRUCTURE_SPAWN && Game.getObjectById(id2).structureType === STRUCTURE_SPAWN)
-	                        || (Game.getObjetById(id1).structureType === STRUCTURE_TOWER && Game.getObjectById(id2).structureType != STRUCTURE_TOWER)) {
-	                    return 1; // spawn first, tower second
-	                }
-	                else {
-	                    return count1 - count2;
-	                }
-	            })
-	            .map(([id, count]) => id);
-	   if (list.length > 0) {
-	       creep.memory.target = list[0];
-	       creep.memory.source = Game.getObjectById(creep.memory.spawn).memory.source[list[0]];
-	       Memory.targets["harvester"][creep.memory.target]++;
-	   }
+        if (!calculated) {
+            calculate(creep);
+        }
+	    if (list.length > 0) {
+	        creep.memory.target = list[0];
+	        creep.memory.source = Game.getObjectById(creep.memory.spawn).memory.source[list[0]];
+	        Memory.targets["harvester"][creep.memory.target]++;
+	    }
 	}
 	
 	// choose source
